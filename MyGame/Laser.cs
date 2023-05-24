@@ -32,21 +32,31 @@ namespace MyGame
             int msElapsed = Elapsed.AsMilliseconds();
             Vector2f pos = _sprite.Position;
 
-            if(pos.X > Game.RenderWindow.Size.X)
+            if (pos.X > Game.RenderWindow.Size.X)
             {
                 MakeDead();
             }
             else
             {
                 _sprite.Position = new Vector2f(pos.X + speed * msElapsed, pos.Y);
-                
-            
+
+
 
             }
         }
+        public override FloatRect GetCollisionRect()
+        {
+            return _sprite.GetGlobalBounds();
+        }
+
+        public override void HandleCollision(GameObject otherGameObject)
+        {
+            if (otherGameObject.HasTag("laser"))
+            {
+                otherGameObject.MakeDead();
+            }
+            MakeDead();
+        }
     }
 }
-public override FloatRect GetCollisionRect()
-{
-    return _sprite.GetGlobalBounds();
-}
+
